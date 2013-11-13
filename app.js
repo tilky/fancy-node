@@ -22,6 +22,8 @@ app.set('title','我的第一个nodejs程序');
 //    app.use(app.router);
 //});
 
+app.use(express.static(__dirname + '/public'));
+
 app.use(express.bodyParser());
 
 //app.get('/hello.txt', function(req, res){
@@ -39,6 +41,14 @@ app.use(express.bodyParser());
 
 // set up the RESTful API, handler methods are defined in api.js
 var api = require('./controllers/api.js');
+
+app.set('views', __dirname + '/views');
+
+app.get('/', function(req, res){
+    require('fs').readFile(__dirname + '/index.html', 'utf8', function(err, text){
+        res.send(text);
+    });
+});
 
 app.post('/catalog', api.catalog.post);
 app.get('/catalog', api.catalog.list);
