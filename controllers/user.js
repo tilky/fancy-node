@@ -7,6 +7,8 @@
  */
 var User = require('../models/user.js');
 
+var util = require('util');
+
 var user = {
     /***
      * Create a catalog
@@ -15,23 +17,29 @@ var user = {
      * @param res
      */
     post : function(req, res) {
-        var username = req.body.username;
 
-        var password = req.body.password;
+        req.assert('username', '6 ~ 12 charactuers required').len(6, 12);
 
-        var firstname = req.body.firstname;
+        req.assert('password', '6 ~ 16 charactuers required').len(8, 16);
 
-        var lastname = req.body.lastname;
+        req.assert('email', 'valid email required').isEmail();
 
-        var email = req.body.email;
+        req.assert('firstname', 'firstname required').notEmpty();
 
+        req.assert('lastname', 'lastname required').notEmpty();
+
+        var errors = req.validationErrors();
+        if (errors) {
+            res.send('There have been validation errors: ' + util.inspect(errors), 400);
+            return;
+        }
 
         var data = {
-            username: username,
-            password: password,
-            firstname: firstname,
-            lastname: lastname,
-            email: email
+            username: req.body.username,
+            password: req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email
         };
 
 
@@ -121,6 +129,58 @@ var user = {
             });
 
         });
+    },
+
+
+    /***
+     * suspend 账号
+     *
+     * @param req
+     * @param res
+     */
+    suspend : function(req, res){
+        var id = req.params.id;
+        if(!id || id == undefined) res.send(404);
+
+        User.findById(id,function(err, user){
+            if(err) throw err;
+
+            user.status = 1;
+
+            user.save(function(err, user){
+                if(err) throw err;
+
+                res.end();
+            });
+
+        });
+
+    },
+
+
+    /***
+     * 重新激活账号
+     *
+     * @param req
+     * @param res
+     */
+    active : function(req, res){
+        var id = req.params.id;
+        if(!id || id == undefined) res.send(404);
+
+        User.findById(id,function(err, user){
+            if(err) throw err;
+
+            user.status = 0;
+
+            user.save(function(err, user){
+                if(err) throw err;
+
+                res.end();
+            });
+
+        });
+
     }
 
 };

@@ -15,6 +15,7 @@ var userSchema = new Schema({
     lastname: String,
     password: String,
     status: {type: Number, default: 0},
+    deleted: {type: Boolean, default: false},
     createdAt: {type: Date, default: Date.now}
 });
 

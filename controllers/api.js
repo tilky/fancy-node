@@ -16,6 +16,8 @@ var user = require('./user.js');
 
 var address = require('./address.js');
 
+var image = require('./image.js');
+
 module.exports.catalog = catalog;
 
 module.exports.product = product;
@@ -25,3 +27,5 @@ module.exports.price = price;
 module.exports.user = user;
 
 module.exports.address = address;
+
+module.exports.image = image;

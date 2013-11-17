@@ -61,4 +61,93 @@ productSchema.methods.setStatus = function(status, cb){
     });
 };
 
+
+productSchema.methods.deleteImage = function(image_id, cb){
+
+    var fs = require('fs');
+
+    var Image = require('./image');
+
+
+    var self = this;
+
+    Image.findById(image_id, function(err, image){
+
+        if(err) return cb(err);
+
+        var files = [];
+
+        var originFile = global.getConfig('upload_path') + self._id + '/' + image.file_name;
+
+        files.push(originFile);
+
+        //delete thumbs
+        var dimensions = global.getConfig('thumbs_dimensions');
+        var arr = image.file_name.split('.');
+        for(var i in dimensions){
+            var url = global.getConfig('upload_path') + self._id + '/' + arr[0] + '.' + dimensions[i] + '.' + arr[1];
+            files.push(url);
+        }
+
+        var async = require('async');
+
+        async.forEach(files, function(path, callback){
+            var realpath = __dirname + '/..' + path;
+
+            fs.unlink(realpath, callback);
+
+        }, function(err, result){
+            if(err) return cb(err);
+
+            //fs.rmdir(__dirname + '/..' + global.getConfig('upload_path') + self._id, function(err){
+
+
+                image.remove(cb);
+            //});
+        });
+
+
+    });
+
+
+
+};
+
+/***
+ * Get all the images
+ *
+ * @param cb
+ */
+productSchema.methods.getImages = function(cb){
+
+    var Image = require('./image');
+
+    var self = this;
+
+    Image.find({productId : this._id}, function(err, images){
+        if(err) return cb(err);
+
+        var result = [];
+
+        var dimensions = global.getConfig('thumbs_dimensions');
+        for(var i in images){
+            var arr = images[i].file_name.split('.');
+            var imageData = [];
+            for(var j in dimensions){
+                var url = global.getConfig('upload_path') + self._id + '/' + arr[0] + '.' + dimensions[j] + '.' + arr[1];
+                imageData.push(url);
+            }
+            result.push({
+                "file_name": images[i].file_name,
+                "origin_mimetype": images[i].origin_mimetype,
+                "origin_filename": images[i].origin_filename,
+                "origin_size": images[i].origin_size,
+                images : imageData
+            });
+        }
+        cb(null, result);
+    });
+
+};
+
 module.exports = mongoose.model('Product', productSchema);

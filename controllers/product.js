@@ -130,6 +130,12 @@ var product = {
     },
 
 
+    /***
+     * Set status for the product
+     *
+     * @param req
+     * @param res
+     */
     setStatus : function(req, res){
 
         var id = req.params.id;
@@ -142,7 +148,6 @@ var product = {
             if(product){
 
                 product.setStatus(status, function(err, product){
-
 
                     res.end();
                 });
