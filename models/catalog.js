@@ -12,26 +12,47 @@ var mongoose = require('mongoose')
 var catalogSchema = new Schema({
     name:  String,
     parentId: String,
-    createdAt: {type: Date, default: Date.now}
+    createdAt: {type: Date, default: Date.now},
+    modifiedAt: Date
 });
 
 
 
+
+/***
+ * Per save, data validation
+ */
 catalogSchema.pre('save', function (next) {
+
+    if(!this.isNew) this.modifiedAt = Date.now();
+
     if(this.parentId){
         this.model('Catalog').find({ _id: this.parentId }, function(err, catalog){
+            if(err) return next(err);
 
-            if(catalog){
-                next();
-            }else{
-                next(new Error('Can not found the parent catalog'));
+            if(!catalog){
+                return next(new Error('Can not found the parent catalog'));
             }
 
         });
-    }else{
-        next();
     }
+    next();
 });
 
 
-module.exports = mongoose.model('Catalog', catalogSchema);
+var Catalog = mongoose.model('Catalog', catalogSchema);
+
+//Validate category name
+Catalog.schema.path('name').validate(function (value) {
+    return /^[\w\s]{2,32}$/.test(value);
+}, 'Invalid Catalog Name, should have 2~32 characters');
+
+
+//Validate parent id
+Catalog.schema.path('parentId').validate(function (value) {
+    return this.parentId == this._id ? false : true;
+}, 'Parent ID can not be itself');
+
+
+module.exports = Catalog;
+

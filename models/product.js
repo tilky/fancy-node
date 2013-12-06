@@ -25,6 +25,10 @@ var productSchema = new Schema({
 
 
 productSchema.pre('save', function (next) {
+
+
+    if(this._id) this.modifiedAt = Date.now();
+
     if(this.catalogId){
 //        this.model('Catalog').find({ _id: this.parentId }, function(err, catalog){
 //
@@ -40,6 +44,13 @@ productSchema.pre('save', function (next) {
         next();
     }
 });
+
+
+//productSchema.pre('update', function(next){
+//
+//    this.model('Product').modifiedAt = Date.now();
+//    next();
+//});
 
 
 /***

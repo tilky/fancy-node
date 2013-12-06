@@ -85,8 +85,14 @@ var user = {
 
             if(err) throw err;
 
-            user.remove();
-            res.end();
+            user.deleted = true;
+
+            user.save(function(err, result){
+                if(err) throw err;
+
+
+                res.end();
+            });
 
         });
 
@@ -128,6 +134,25 @@ var user = {
                 res.end();
             });
 
+        });
+    },
+
+
+    /***
+     * Get User details
+     *
+     * @param req
+     * @param res
+     */
+    get : function(req, res){
+        var id = req.params.id;
+
+
+        User.findById(id,function(err, user){
+
+
+            res.json(user);
+            res.end();
         });
     },
 
@@ -180,6 +205,28 @@ var user = {
             });
 
         });
+
+    },
+
+
+    /***
+     *
+     * @param req
+     * @param res
+     */
+    login : function(req, res){
+
+
+    },
+
+
+    /***
+     *
+     * @param req
+     * @param res
+     */
+    logout : function(req, res){
+
 
     }
 

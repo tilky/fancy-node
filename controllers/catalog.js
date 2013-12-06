@@ -15,7 +15,7 @@ var catalog = {
      * @param req
      * @param res
      */
-    post : function(req, res) {
+    post : function(req, res, next) {
         var name = req.body.name;
 
         var parentId = req.body.parentId;
@@ -25,10 +25,11 @@ var catalog = {
             parentId : parentId
         };
         new Catalog(data).save(function(err, catalog){
-            if(err) throw err;
+            if(err) return next(err);
 
-            res.json(catalog._id);
-            res.end();
+            return res.json({
+                id: catalog._id
+            });
         });
     },
 

@@ -91,14 +91,15 @@ var product = {
         Product.findById(id, function(err, product){
             if(err) throw err;
 
-            product.name = name;
-            product.catalogId = catalogId;
-            product.description = description;
-            product.rrp = rrp;
-            product.market_price = market_price;
-            //product.modifiedAt = Date.now;
+            if(name) product.name = name;
+            if(catalogId) product.catalogId = catalogId;
+            if(description) product.description = description;
+            if(rrp !== undefined) product.rrp = rrp;
+            if(market_price !== undefined) product.market_price = market_price;
+            if(quantity !== undefined) product.quantity = quantity;
 
-            product.save(function(err, catalog){
+
+            product.save(function(err, product){
                 if(err) throw err;
 
                 res.json(product._id);

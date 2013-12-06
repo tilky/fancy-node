@@ -4,13 +4,29 @@ var express = require('express'),
                 nconf = require('nconf');
 
 
-var app = express();
+var app = module.exports.app = express();
 
 mongoose.connect('mongodb://localhost/fancy');
 
 nconf.file({ file: './config.json' });
 
 global.nconf = nconf;
+
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+        res.send(200);
+    }
+    else {
+        next();
+    }
+};
+
 
 /***
  * Register some global functions
@@ -41,6 +57,7 @@ console.log(global.getConfig('upload_path'));
 //    app.use(express.methodOverride());
 //    app.use(app.router);
 //});
+app.use(allowCrossDomain);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -82,43 +99,70 @@ app.get('/', function(req, res){
 
 
 
-app.post('/catalog', api.catalog.post);
-app.get('/catalog', api.catalog.list);
-app.delete('/catalog/:id', api.catalog.delete);
-app.put('/catalog/:id', api.catalog.put);
+app.post('/api/v1/catalog', api.catalog.post);
+app.get('/api/v1/catalog', api.catalog.list);
+app.delete('/api/v1/catalog/:id', api.catalog.delete);
+app.put('/api/v1/catalog/:id', api.catalog.put);
 
-app.post('/product', api.product.post);
-app.get('/product', api.product.list);
-app.delete('/product/:id', api.product.delete);
-app.put('/product/:id', api.product.put);
+app.post('/api/v1/product', api.product.post);
+app.get('/api/v1/product', api.product.list);
+app.delete('/api/v1/product/:id', api.product.delete);
+app.put('/api/v1/product/:id', api.product.put);
 
-app.post('/product/:id/status', api.product.setStatus);
+app.post('/api/v1/product/:id/status', api.product.setStatus);
 
-app.get('/product/:id/images', api.image.list)
-app.post('/product/:id/image', api.image.post);
-app.delete('/product/:id/image/:image_id', api.image.delete);
+app.get('/api/v1/product/:id/images', api.image.list)
+app.post('/api/v1/product/:id/image', api.image.post);
+app.delete('/api/v1/product/:id/image/:image_id', api.image.delete);
 
-app.post('/price', api.price.post);
-app.get('/price', api.price.list);
-app.delete('/price/:id', api.price.delete);
-app.put('/price/:id', api.price.put);
-
-
-app.post('/user', api.user.post);
-app.get('/user', api.user.list);
-app.delete('/user/:id', api.user.delete);
-app.put('/user/:id', api.user.put);
-
-app.post('/user/:id/suspend', api.user.suspend);
-app.delete('/user/:id/suspend', api.user.active);
+app.post('/api/v1/price', api.price.post);
+app.get('/api/v1/price', api.price.list);
+app.delete('/api/v1/price/:id', api.price.delete);
+app.put('/api/v1/price/:id', api.price.put);
 
 
-app.post('/user/:userid/address', api.address.post);
-app.get('/user/:userid/address', api.address.list);
-app.delete('/user/:userid/address/:id', api.address.delete);
-app.put('/user/:userid/address/:id', api.address.put);
+app.post('/api/v1/user', api.user.post);
+app.get('/api/v1/user', api.user.list);
+app.get('/api/v1/user/:id', api.user.get);
+app.delete('/api/v1/user/:id', api.user.delete);
+app.put('/api/v1/user/:id', api.user.put);
 
-app.post('/user/:userid/address/:id/default', api.address.setDefault);
+app.post('/api/v1/user/:id/suspend', api.user.suspend);
+app.delete('/api/v1/user/:id/suspend', api.user.active);
+
+
+app.post('/api/v1/user/login', api.user.login);
+app.delete('/api/v1/user/login', api.user.logout);
+
+
+app.post('/api/v1/user/:userid/address', api.address.post);
+app.get('/api/v1/user/:userid/address', api.address.list);
+app.delete('/api/v1/user/:userid/address/:id', api.address.delete);
+app.put('/api/v1/user/:userid/address/:id', api.address.put);
+
+app.post('/api/v1/user/:userid/address/:id/default', api.address.setDefault);
+
+
+/***
+ * Error handle function
+ */
+app.use(function(err, req, res, next){
+
+    if(err.name == 'ValidationError'){
+        var errors = [];
+        var keys = Object.keys(err.errors);
+        for(var i in err.errors){
+            var entry = err.errors[i];
+            errors.push({
+                name: keys[i],
+                error: entry.message,
+                value: entry.value
+            });
+        }
+        return res.send(JSON.stringify(errors), 400);
+    }
+    next();
+});
 
 app.listen(3000);
 console.log('Listening on port 3000');
