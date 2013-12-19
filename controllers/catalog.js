@@ -50,7 +50,23 @@ var catalog = {
     },
 
 
+    /***
+     * Get catalog details
+     *
+     * @param req
+     * @param res
+     */
+    get : function(req, res){
+        var id = req.params.id;
 
+
+        Catalog.findById(id,function(err, catalog){
+            if(err) throw err;
+
+            res.json(catalog);
+            res.end();
+        });
+    },
 
 
     /***

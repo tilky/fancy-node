@@ -50,6 +50,26 @@ var price = {
 
     },
 
+
+    /***
+     * Get price details
+     *
+     * @param req
+     * @param res
+     */
+    get : function(req, res){
+        var id = req.params.id;
+
+
+        Price.findById(id,function(err, price){
+            if(err) throw err;
+
+            res.json(price);
+            res.end();
+        });
+    },
+
+
     /***
      * Delete a price range
      *

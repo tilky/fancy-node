@@ -149,7 +149,7 @@ var user = {
 
 
         User.findById(id,function(err, user){
-
+            if(err) throw err;
 
             res.json(user);
             res.end();

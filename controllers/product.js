@@ -111,6 +111,24 @@ var product = {
 
 
     /***
+     * Get catalog details
+     *
+     * @param req
+     * @param res
+     */
+    get : function(req, res){
+        var id = req.params.id;
+
+
+        Product.findById(id,function(err, product){
+            if(err) throw err;
+
+            res.json(product);
+            res.end();
+        });
+    },
+
+    /***
      * Delete a product
      *
      * @param req

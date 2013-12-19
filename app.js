@@ -103,11 +103,13 @@ app.post('/api/v1/catalog', api.catalog.post);
 app.get('/api/v1/catalog', api.catalog.list);
 app.delete('/api/v1/catalog/:id', api.catalog.delete);
 app.put('/api/v1/catalog/:id', api.catalog.put);
+app.get('/api/v1/catalog/:id', api.catalog.get);
 
 app.post('/api/v1/product', api.product.post);
 app.get('/api/v1/product', api.product.list);
 app.delete('/api/v1/product/:id', api.product.delete);
 app.put('/api/v1/product/:id', api.product.put);
+app.get('/api/v1/product/:id', api.product.get);
 
 app.post('/api/v1/product/:id/status', api.product.setStatus);
 
@@ -115,11 +117,12 @@ app.get('/api/v1/product/:id/images', api.image.list)
 app.post('/api/v1/product/:id/image', api.image.post);
 app.delete('/api/v1/product/:id/image/:image_id', api.image.delete);
 
+
 app.post('/api/v1/price', api.price.post);
 app.get('/api/v1/price', api.price.list);
 app.delete('/api/v1/price/:id', api.price.delete);
 app.put('/api/v1/price/:id', api.price.put);
-
+app.get('/api/v1/price/:id', api.price.get);
 
 app.post('/api/v1/user', api.user.post);
 app.get('/api/v1/user', api.user.list);
