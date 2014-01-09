@@ -5,3 +5,32 @@
  * Time: AM11:33
  * To change this template use File | Settings | File Templates.
  */
+var Common = require('../common');
+
+var assert = require("assert");
+
+
+describe('User Model', function(){
+
+
+
+    before(function(done){
+
+        Common.loadData();
+
+        done();
+    });
+
+    it('test', function(){
+        assert.equal(true, true);
+
+    });
+
+
+    after(function(done){
+
+        done();
+
+    });
+
+})

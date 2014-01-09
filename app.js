@@ -38,7 +38,7 @@ global.getConfig = function(config){
     return global.nconf.get(config);
 }
 
-console.log(global.getConfig('upload_path'));
+//console.log(global.getConfig('upload_path'));
 
 //app.set('title','我的第一个nodejs程序');
 
@@ -62,7 +62,6 @@ app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/public'));
 
 app.use(express.bodyParser());
-
 
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {
@@ -94,8 +93,6 @@ app.get('/', function(req, res){
         res.send(text);
     });
 });
-
-
 
 
 

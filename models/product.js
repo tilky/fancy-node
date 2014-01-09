@@ -11,13 +11,16 @@ var mongoose = require('mongoose')
 var productSchema = new Schema({
     name:  String,
     catalogId: String,      //目录
+    meta_description: String,
+    meta_keywords: String,
     description: String,    //产品描述
     retail_price : Number,  //销售价
     market_price : Number,  //市场价格
+    tags: String,
     quantity : Number,      //库存数量
     status : {type: Number, default: 0},    //状态，0草稿 1正常
-    createdAt: {type: Date, default: Date.now},
-    modifiedAt : {type: Date, default: null}
+    createdAt: Date,
+    modifiedAt : {type: Date, default: Date.now}
 });
 
 

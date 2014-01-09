@@ -11,9 +11,11 @@ var mongoose = require('mongoose')
 
 var catalogSchema = new Schema({
     name:  String,
+    description: String,
     parentId: String,
-    createdAt: {type: Date, default: Date.now},
-    modifiedAt: Date
+    deleted: {type: Boolean, default: false},
+    createdAt: Date,
+    modifiedAt: {type: Date, default: Date.now}
 });
 
 

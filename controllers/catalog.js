@@ -18,10 +18,13 @@ var catalog = {
     post : function(req, res, next) {
         var name = req.body.name;
 
+        var description = req.body.description;
+
         var parentId = req.body.parentId;
 
         var data = {
             name: name,
+            description: description,
             parentId : parentId
         };
         new Catalog(data).save(function(err, catalog){
@@ -40,9 +43,9 @@ var catalog = {
      * @param req
      * @param res
      */
-    list : function(req, res){
+    list : function(req, res, next){
         Catalog.find(function(err, catalogs) {
-            if(err) throw err;
+            if(err) return next(err);
 
             res.json(catalogs);
             res.end();
@@ -84,11 +87,10 @@ var catalog = {
             if(err) throw err;
 
             catalog.remove();
+
             res.end();
 
         });
-
-
     },
 
 
@@ -104,12 +106,16 @@ var catalog = {
 
         var name = req.body.name;
 
+        var description = req.body.description;
+
         var parentId = req.body.parentId;
 
         Catalog.findById(id,function(err, catalog){
             if(err) throw err;
 
             catalog.name = name;
+
+            catalog.description = description;
 
             if(parentId) catalog.parentId = parentId;
 
