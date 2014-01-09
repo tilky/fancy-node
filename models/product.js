@@ -17,7 +17,7 @@ var productSchema = new Schema({
     retail_price : Number,  //销售价
     market_price : Number,  //市场价格
     tags: String,
-    quantity : Number,      //库存数量
+    quantity : {type: Number, default: 0},      //库存数量
     status : {type: Number, default: 0},    //状态，0草稿 1正常
     createdAt: Date,
     modifiedAt : {type: Date, default: Date.now}
