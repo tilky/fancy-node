@@ -1,5 +1,5 @@
 {
-    "upload_path": "/uploads/",
+    "upload_path": "uploads",
     "thumbs_dimensions" : [400,200,100]
 
 }

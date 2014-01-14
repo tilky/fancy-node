@@ -20,7 +20,7 @@ var image = {
      * @param req
      * @param res
      */
-    post : function(req, res) {
+    post : function(req, res, next) {
         var id = req.params.id;
 
         Product.findById(id, function(err, product){
@@ -32,8 +32,8 @@ var image = {
             var upload = new Upload(req.files.image);
 
             upload.save(id, function(err, result){
+                if(err) return next(err);
 
-                console.log('saved');
                 res.end();
             });
 
@@ -49,12 +49,14 @@ var image = {
      * @param req
      * @param res
      */
-    list : function(req, res){
+    list : function(req, res, next){
         var id = req.params.id;
 
         Product.findById(id, function(err, product){
 
-            if(err) throw err;
+            if(err) return next(err);
+
+            if(!product) return res.send(404);
 
             product.getImages(function(err, images){
                 if(err) throw err;

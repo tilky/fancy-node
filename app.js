@@ -86,15 +86,6 @@ app.use(expressValidator({
 // set up the RESTful API, handler methods are defined in api.js
 var api = require('./controllers/api.js');
 
-app.set('views', __dirname + '/views');
-
-app.get('/', function(req, res){
-    require('fs').readFile(__dirname + '/app/index.html', 'utf8', function(err, text){
-        res.send(text);
-    });
-});
-
-
 
 app.post('/api/v1/catalog', api.catalog.post);
 app.get('/api/v1/catalog', api.catalog.list);
@@ -147,7 +138,6 @@ app.post('/api/v1/user/:userid/address/:id/default', api.address.setDefault);
  * Error handle function
  */
 app.use(function(err, req, res, next){
-
     if(err.name == 'ValidationError'){
         var errors = [];
         var keys = Object.keys(err.errors);
@@ -160,8 +150,10 @@ app.use(function(err, req, res, next){
             });
         }
         return res.send(JSON.stringify(errors), 400);
+    }else{
+        console.log('Exception: ' + err.stack);
+        res.send(500);
     }
-    next();
 });
 
 app.listen(3000);

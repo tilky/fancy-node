@@ -18,7 +18,13 @@ var productSchema = new Schema({
     market_price : Number,  //市场价格
     tags: String,
     quantity : {type: Number, default: 0},      //库存数量
-    status : {type: Number, default: 0},    //状态，0草稿 1正常
+    sku: String,
+    upc: String,
+    ean: String,
+    jan: String,
+    isbn: String,
+    mpn: String,
+    status : {type: Boolean, default: false},    //状态，0草稿 1正常
     createdAt: Date,
     modifiedAt : {type: Date, default: Date.now}
 });
@@ -145,18 +151,18 @@ productSchema.methods.getImages = function(cb){
 
         var dimensions = global.getConfig('thumbs_dimensions');
         for(var i in images){
-            var arr = images[i].file_name.split('.');
             var imageData = [];
             for(var j in dimensions){
-                var url = global.getConfig('upload_path') + self._id + '/' + arr[0] + '.' + dimensions[j] + '.' + arr[1];
+                var url = images[i].getThumb(dimensions[0], dimensions[1]);
                 imageData.push(url);
             }
             result.push({
-                "file_name": images[i].file_name,
-                "origin_mimetype": images[i].origin_mimetype,
-                "origin_filename": images[i].origin_filename,
-                "origin_size": images[i].origin_size,
-                images : imageData
+                id: images[i]._id,
+                file_name: images[i].file_name,
+                mimetype: images[i].mimetype,
+                filename: images[i].filename,
+                size: images[i].size,
+                thumbs : imageData
             });
         }
         cb(null, result);

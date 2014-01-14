@@ -9,13 +9,7 @@ module.exports = function(file){
 
     var fs = require('fs');
 
-    var easyimg = require('easyimage');
-
     var Image = require('./image');
-
-
-    console.log(file);
-
 
     var init = function(){
         var mimetype = file.type;
@@ -53,73 +47,45 @@ module.exports = function(file){
 
 
 
+
+
     init();
 
 
     return {
+
+
+
         /**
          * Save the image file to local
          */
         save : function(product_id, cb){
+
             var mkdirp = require('mkdirp');
 
             var newFilename = randomString();
 
-            var newPath = __dirname + '/../' + global.getConfig('upload_path') + product_id + '/';
+            newFilename += '.' + Image.getExt(file.type);
+
+            var newPath = __dirname + '/../' + global.getConfig('upload_path') + '/' + product_id + '/';
 
             mkdirp(newPath, function(err){
                 if(err) return cb(err);
 
-                easyimg.convert({           //convert the original file and save it.
-                    src: file.path,
-                    dst: newPath + newFilename + '.jpg',
-                    quality: 100
-                }, function(err, image){
+                fs.readFile(file.path, 'binary', function(err, data){
                     if(err) return cb(err);
 
-                    var dimensions = global.getConfig('thumbs_dimensions');
-
-
-                    /***
-                     * Generate small thumbs
-                     *
-                     * @param width
-                     * @param cb
-                     */
-                    var generateThumb = function(width, cb){
-                        console.log('Generate width:' + width);
-
-                        easyimg.resize({
-                                src: file.path,
-                                dst: newPath + newFilename + '.' + width + '.jpg',
-                                width: width
-                            },
-                            function(err, image){
-                                if(err) return cb(err);
-
-                                cb();
-                            });
-                    };
-
-                    /***
-                     * Save thumbs
-                     *
-                     * @type {*}
-                     */
-                    var async = require('async');
-
-                    async.forEach(dimensions, function(width, callback){
-                        generateThumb(width, callback);
-                    }, function(err, result){
+                    fs.writeFile(newPath + newFilename, data, 'binary', function(err){
                         if(err) return cb(err);
+                        //var dimensions = global.getConfig('thumbs_dimensions');
 
-                        console.log('All saved image files! ' + newFilename);
+                        console.log('Saved image file! ' + newFilename);
                         //now we will update the database
                         var data = {
-                            file_name: newFilename + '.jpg',
-                            origin_mimetype: file.type,
-                            origin_filename: file.name,
-                            origin_size: file.size,
+                            file_name: newFilename,
+                            mimetype: file.type,
+                            filename: file.name,
+                            size: file.size,
                             productId: product_id
                         };
 
@@ -129,9 +95,10 @@ module.exports = function(file){
                             cb(null, image);
                         });
 
-                    });
-
+                    })
                 });
+
+
             });
         }
 

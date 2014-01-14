@@ -11,6 +11,8 @@ var mongoose = require('mongoose')
 
 var catalogSchema = new Schema({
     name:  String,
+    meta_description: String,
+    meta_keywords: String,
     description: String,
     parentId: String,
     deleted: {type: Boolean, default: false},

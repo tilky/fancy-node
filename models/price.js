@@ -12,7 +12,8 @@ var priceSchema = new Schema({
     low: Number,
     high: Number,
     currency: String,
-    createdAt: {type: Date, default: Date.now}
+    createdAt: Date,
+    modifiedAt: {type: Date, default: Date.now}
 });
 
 

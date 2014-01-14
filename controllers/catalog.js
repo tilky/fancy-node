@@ -18,6 +18,10 @@ var catalog = {
     post : function(req, res, next) {
         var name = req.body.name;
 
+        var meta_description = req.body.meta_description;
+
+        var meta_keywords = req.body.meta_keywords;
+
         var description = req.body.description;
 
         var parentId = req.body.parentId;
@@ -25,6 +29,8 @@ var catalog = {
         var data = {
             name: name,
             description: description,
+            meta_keywords: meta_keywords,
+            meta_description: meta_description,
             parentId : parentId
         };
         new Catalog(data).save(function(err, catalog){
@@ -106,6 +112,10 @@ var catalog = {
 
         var name = req.body.name;
 
+        var meta_description = req.body.meta_description;
+
+        var meta_keywords = req.body.meta_keywords;
+
         var description = req.body.description;
 
         var parentId = req.body.parentId;
@@ -116,6 +126,10 @@ var catalog = {
             catalog.name = name;
 
             catalog.description = description;
+
+            catalog.meta_description = meta_description;
+
+            catalog.meta_keywords = meta_keywords;
 
             if(parentId) catalog.parentId = parentId;
 
