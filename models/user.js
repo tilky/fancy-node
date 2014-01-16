@@ -8,6 +8,8 @@
 var mongoose = require('mongoose')
     , Schema = mongoose.Schema;
 
+var moment = require('moment');
+
 var userSchema = new Schema({
     username: String,
     email: String,
@@ -15,6 +17,8 @@ var userSchema = new Schema({
     lastname: String,
     password: String,
     status: {type: Number, default: 0},
+    api_token: String,
+    expiredAt: Date,
     deleted: {type: Boolean, default: false},
     createdAt: Date,
     modifiedAt: {type: Date, default: Date.now}
@@ -37,6 +41,23 @@ userSchema.pre('save', function (next) {
     next();
 //    }
 });
+
+userSchema.statics.login = function(username, password, cb){
+    var self = this;
+
+    self.findOne({username: username}, function(err, user){
+        if(err) return cb(err);
+
+        if(!user) return cb('User not found');
+
+        user.api_token = username;
+        user.expiredAt = moment().format('YYYY-MM-DD HH:mm:ssZ');
+
+        user.save(cb);
+    });
+
+
+};
 
 
 module.exports = mongoose.model('User', userSchema);

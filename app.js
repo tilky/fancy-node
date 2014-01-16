@@ -84,7 +84,7 @@ app.use(expressValidator({
 
 
 // set up the RESTful API, handler methods are defined in api.js
-var api = require('./controllers/api.js');
+var api = require('./controllers/api');
 
 
 app.post('/api/v1/catalog', api.catalog.post);
@@ -132,6 +132,9 @@ app.delete('/api/v1/user/:userid/address/:id', api.address.delete);
 app.put('/api/v1/user/:userid/address/:id', api.address.put);
 
 app.post('/api/v1/user/:userid/address/:id/default', api.address.setDefault);
+
+
+app.post('/api/v1/sns/login', api.sns.login);
 
 
 /***

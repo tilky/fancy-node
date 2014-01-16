@@ -6,17 +6,19 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var catalog = require('./catalog.js');
+var catalog = require('./catalog');
 
-var product = require('./product.js');
+var product = require('./product');
 
-var price = require('./price.js');
+var price = require('./price');
 
-var user = require('./user.js');
+var user = require('./user');
 
-var address = require('./address.js');
+var address = require('./address');
 
-var image = require('./image.js');
+var image = require('./image');
+
+var sns = require('./sns');
 
 module.exports.catalog = catalog;
 
@@ -29,3 +31,5 @@ module.exports.user = user;
 module.exports.address = address;
 
 module.exports.image = image;
+
+module.exports.sns = sns;

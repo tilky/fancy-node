@@ -17,7 +17,10 @@
         "chai": "1.8.1",
         "should": "2.1.0",
         "supertest": "latest",
-        "ThumborJS": "0.1.0"
+        "ThumborJS": "0.1.0",
+        "moment": "2.5.0",
+        "facebook-node-sdk": "0.2.0",
+        "weibo": "0.6.10"
     },
     "scripts": {
         "test_old": "node node_modules/mocha/bin/mocha $(find tests -name '*.js')",

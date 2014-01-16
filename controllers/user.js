@@ -214,8 +214,31 @@ var user = {
      * @param req
      * @param res
      */
-    login : function(req, res){
+    login : function(req, res, next){
+        req.check('username', '6 ~ 12 charactuers required').notNull();
 
+        req.check('password', '6 ~ 16 charactuers required').notNull();
+
+        var errors = req.validationErrors();
+        if (errors) {
+            res.send('There have been validation errors: ' + util.inspect(errors), 400);
+            return;
+        }
+
+        var username = req.body.username;
+
+        var password = req.body.password;
+
+
+        User.login(username, password, function(err, user){
+            if(err) return next(err);
+
+
+            res.json({ token: user.api_token, expired: user.expiredAt });
+
+            res.end();
+
+        });
 
     },
 
