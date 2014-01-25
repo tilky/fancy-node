@@ -5,7 +5,7 @@
  * Time: PM1:47
  * To change this template use File | Settings | File Templates.
  */
-var Address = require('../models/address.js');
+var Address = require('../models/address');
 
 var check = require('validator').check;
 

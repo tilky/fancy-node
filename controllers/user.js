@@ -5,7 +5,7 @@
  * Time: PM10:25
  * To change this template use File | Settings | File Templates.
  */
-var User = require('../models/user.js');
+var User = require('../models/user');
 
 var util = require('util');
 

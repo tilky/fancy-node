@@ -12,6 +12,8 @@ var product = require('./product');
 
 var price = require('./price');
 
+var comment = require('./comment');
+
 var user = require('./user');
 
 var address = require('./address');
@@ -33,3 +35,5 @@ module.exports.address = address;
 module.exports.image = image;
 
 module.exports.sns = sns;
+
+module.exports.comment = comment;

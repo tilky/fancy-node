@@ -5,7 +5,7 @@
  * Time: PM9:45
  * To change this template use File | Settings | File Templates.
  */
-var Price = require('../models/price.js');
+var Price = require('../models/price');
 
 var check = require('validator').check;
 

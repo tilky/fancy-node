@@ -47,9 +47,9 @@ catalogSchema.pre('save', function (next) {
 var Catalog = mongoose.model('Catalog', catalogSchema);
 
 //Validate category name
-Catalog.schema.path('name').validate(function (value) {
-    return /^[\w\s]{2,32}$/.test(value);
-}, 'Invalid Catalog Name, should have 2~32 characters');
+//Catalog.schema.path('name').validate(function (value) {
+//    return /^[\w\s]{2,32}$/.test(value);
+//}, 'Invalid Catalog Name, should have 2~32 characters');
 
 
 //Validate parent id

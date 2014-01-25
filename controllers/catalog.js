@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var Catalog = require('../models/catalog.js');
+var Catalog = require('../models/catalog');
 
 var catalog = {
     /***
@@ -106,7 +106,7 @@ var catalog = {
      * @param req
      * @param res
      */
-    put : function(req, res){
+    put : function(req, res, next){
 
         var id = req.params.id;
 
@@ -121,7 +121,7 @@ var catalog = {
         var parentId = req.body.parentId;
 
         Catalog.findById(id,function(err, catalog){
-            if(err) throw err;
+            if(err) return next(err);
 
             catalog.name = name;
 
@@ -134,7 +134,7 @@ var catalog = {
             if(parentId) catalog.parentId = parentId;
 
             catalog.save(function(err, catalog){
-                if(err) throw err;
+                if(err) return next(err);
 
                 res.json(catalog._id);
                 res.end();

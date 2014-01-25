@@ -5,7 +5,7 @@
  * Time: AM9:04
  * To change this template use File | Settings | File Templates.
  */
-var Product = require('../models/product.js');
+var Product = require('../models/product');
 
 var product = {
 

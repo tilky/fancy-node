@@ -6,9 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var Image = require('../models/image.js');
+var Image = require('../models/image');
 
-var Product = require('../models/product.js');
+var Product = require('../models/product');
 
 var fs = require('fs');
 
