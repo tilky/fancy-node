@@ -8,6 +8,8 @@
 var mongoose = require('mongoose')
     , Schema = mongoose.Schema;
 
+var Comment = require('./comment');
+
 var productSchema = new Schema({
     name:  String,
     catalogId: String,      //目录
@@ -26,7 +28,11 @@ var productSchema = new Schema({
     mpn: String,
     status : {type: Boolean, default: false},    //状态，0草稿 1正常
     createdAt: Date,
-    modifiedAt : {type: Date, default: Date.now}
+    modifiedAt : {type: Date, default: Date.now},
+
+
+
+    productId: { type: mongoose.Schema.ObjectId, ref: 'Comment' }
 });
 
 

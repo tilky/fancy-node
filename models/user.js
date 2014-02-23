@@ -25,6 +25,21 @@ var userSchema = new Schema({
 });
 
 
+/***
+ * Get Brief information for this user
+ *
+ * @return {Object}
+ */
+userSchema.methods.getBrief = function(){
+
+    var self = this;
+
+    return {
+        user_id : self._id,
+        username : self.username,
+        image : 'http://thefancy-media-ec2.thefancy.com/UserImages/atrinhy_b697f85efbbc.jpg'
+    };
+};
 
 userSchema.pre('save', function (next) {
 //    if(this.parentId){

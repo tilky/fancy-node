@@ -105,6 +105,11 @@ app.get('/api/v1/product/:id/images', api.image.list)
 app.post('/api/v1/product/:id/image', api.image.post);
 app.delete('/api/v1/product/:id/image/:image_id', api.image.delete);
 
+// Comments related
+app.post('/api/v1/product/:id/comment', api.comment.post);
+app.get('/api/v1/product/:id/comment', api.comment.list);
+app.put('/api/v1/product/:id/comment/:comment_id', api.comment.put);
+app.delete('/api/v1/product/:id/comment/:comment_id', api.comment.delete);
 
 app.post('/api/v1/price', api.price.post);
 app.get('/api/v1/price', api.price.list);

@@ -65,7 +65,7 @@ var catalog = {
      * @param req
      * @param res
      */
-    get : function(req, res){
+    get : function(req, res, next){
         var id = req.params.id;
 
 
@@ -84,7 +84,7 @@ var catalog = {
      * @param req
      * @param res
      */
-    delete : function(req, res){
+    delete : function(req, res, next){
 
         var id = req.params.id;
 
